@@ -1,0 +1,15 @@
+idf_component_register(
+    SRCS
+        "FirmwareUpgrade.cc"
+        "SystemInfo.cc"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        "esp_https_ota"
+        "nvs_flash"
+        "esp_psram"
+        "esp_wifi"
+        "json"
+        "mbedtls"
+        "app_update"
+)
