@@ -8,15 +8,17 @@ public:
     FirmwareUpgrade();
     ~FirmwareUpgrade();
 
+    void SetCheckVersionUrl(std::string check_version_url);
     void CheckVersion();
     bool HasNewVersion() { return has_new_version_; }
-    void StartUpgrade() { Upgrade(new_version_url_); }
+    void StartUpgrade() { Upgrade(firmware_url_); }
     void MarkValid();
 
 private:
+    std::string check_version_url_;
     bool has_new_version_ = false;
-    std::string new_version_;
-    std::string new_version_url_;
+    std::string firmware_version_;
+    std::string firmware_url_;
 
     void Upgrade(std::string firmware_url);
 };

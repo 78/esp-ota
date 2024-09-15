@@ -1,9 +1,0 @@
-menu "OTA Update"
-
-config OTA_VERSION_URL
-    string "OTA Version URL"
-    default "https://"
-    help
-        The application will access this URL to check for updates.
-
-endmenu

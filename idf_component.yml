@@ -4,8 +4,9 @@ description: ESP32 OTA Update
 files:
   exclude:
   - .git
+  - dist
 license: MIT
 maintainer: Terrence <terrence@tenclass.com>
 repository: git://github.com/78/esp-ota.git
 url: https://github.com/78/esp-ota.git
-version: 1.0.0
+version: 1.0.1

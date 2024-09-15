@@ -18,15 +18,24 @@ FirmwareUpgrade::FirmwareUpgrade() {
 FirmwareUpgrade::~FirmwareUpgrade() {
 }
 
+void FirmwareUpgrade::SetCheckVersionUrl(std::string check_version_url) {
+    check_version_url_ = check_version_url;
+}
+
 void FirmwareUpgrade::CheckVersion() {
     std::string current_version = esp_app_get_description()->version;
     ESP_LOGI(TAG, "Current version: %s", current_version.c_str());
+
+    if (check_version_url_.length() < 10) {
+        ESP_LOGE(TAG, "Check version URL is not properly set");
+        return;
+    }
 
     // Get device info and request the latest firmware from the server
     std::string device_info = SystemInfo::GetJsonString();
 
     esp_http_client_config_t config = {};
-    config.url = CONFIG_OTA_VERSION_URL;
+    config.url = check_version_url_.c_str();
     config.crt_bundle_attach = esp_crt_bundle_attach;
     esp_http_client_handle_t client = esp_http_client_init(&config);
     esp_http_client_set_method(client, HTTP_METHOD_POST);
@@ -90,13 +99,13 @@ void FirmwareUpgrade::CheckVersion() {
         return;
     }
 
-    new_version_ = version->valuestring;
-    new_version_url_ = url->valuestring;
+    firmware_version_ = version->valuestring;
+    firmware_url_ = url->valuestring;
     cJSON_Delete(root);
 
-    has_new_version_ = new_version_ != current_version;
+    has_new_version_ = firmware_version_ != current_version;
     if (has_new_version_) {
-        ESP_LOGI(TAG, "New version available: %s", new_version_.c_str());
+        ESP_LOGI(TAG, "New version available: %s", firmware_version_.c_str());
     } else {
         ESP_LOGI(TAG, "No new version available");
     }
